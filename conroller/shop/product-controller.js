@@ -4,13 +4,13 @@ const Products = require("../../models/Products")
 
 const filteredProducts = async(req, res)=>{
     try{
-        const {category = [], brand= [], sortBy = "price-lowtohigh"} = req.query;
+        const {category = [], brand= [], sortBy = "price-lowtohigh"} =req.query;
         let filters = {};
         if(category.length){
             filters.category = {$in: category.split(',')}
         }
         if(brand.length){
-            filters.brand = {$in: category.split(',')}
+            filters.brand = {$in: brand.split(',')}
         }
         let sort = {}
         switch (sortBy){
