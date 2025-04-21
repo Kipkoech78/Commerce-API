@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 5000
 const app  = express()
 const authRouter = require('./routes/auth/auth-routes')
+// const  shopAdressRouter = require('./conroller/shop/adressRoutes')
 const mongodbConn = process.env.MONGODBCONSECRET
 mongoose.connect(mongodbConn)
 .then(()=>console.log('Successfuly Connected to Cloud MongoDB')).catch(err=>console.error('Could not connect to Cloud MongoDB', err));
@@ -23,5 +24,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/auth', authRouter);
+// app.use('/api/shop/address', shopAdressRouter )
 //app.use('/api/cart', auth)
 app.listen(PORT, ()=>console.log('Server is running on port', PORT))

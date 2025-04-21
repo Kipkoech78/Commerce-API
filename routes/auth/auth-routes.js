@@ -7,6 +7,8 @@ const { handleImageUpload, addProduct, editProduct, deleteProduct, fetchAllProdu
 const { upload } = require('../../helpers/claudinary');
 const { filteredProducts, fetchProductById } = require('../../conroller/shop/product-controller');
 const { addToCart, fetchCartItems, UpdateCartItem, DeleteCarttems } = require('../../conroller/cart-controller/cartController');
+const { addAddress, fetchAllAdress, editAdress, deleteAdress } = require('../../conroller/shop/Adress-controller');
+//const { addAdress, , deleteAdress, editAdress } = require('../../conroller/shop/Adress-controller');
 const router = express.Router();
 
 router.post('/register', registerUser);
@@ -34,6 +36,12 @@ router.post('/addcart/', addToCart)
 router.get('/cart/get/:userId', fetchCartItems)
 router.put('/cart/update', UpdateCartItem)
 router.delete('/cart/:userId/:productId', DeleteCarttems)
+
+//address routes
+router.post('/address/add/', addAddress)
+router.get('/address/get/:userId', fetchAllAdress)
+router.put('/address/edit/:userId/:addressId', editAdress)
+router.delete('/address/delete/:userId/:addressId', deleteAdress)
 
 
 module.exports = router;
