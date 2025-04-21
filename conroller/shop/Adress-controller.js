@@ -57,8 +57,8 @@ const editAdress = async (req, res) => {
     try {
       const { userId, addressId } = req.params;
       const formData = req.body;
-      console.log( userId, "userId from frontEnd")
-      console.log( addressId, "Address Id from frontEnd")
+    //   console.log( userId, "userId from frontEnd")
+    //   console.log( addressId, "Address Id from frontEnd")
   
       if (!userId || !addressId) {
         return res.status(400).json({
