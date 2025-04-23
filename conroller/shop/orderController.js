@@ -18,7 +18,7 @@ const createOrder = async (req, res) => {
       paymentId,
       payerId,
     } = req.body;
-   console.log("cartId", cartId)
+    console.log("cartId", cartId);
     const createPaymentJson = {
       intent: "sale",
       payer: { payment_method: "paypal" },
@@ -54,26 +54,28 @@ const createOrder = async (req, res) => {
         });
       } else {
         const newlyCreatedOrder = new Order({
-            cartId,
-            userId,
-            cartItems,
-            addressInfo,
-            orderStatus,
-            paymentMethord,
-            paymentStatus,
-            totalAmount,
-            orderDate,
-            orderUpdateDate,
-            paymentId,
-            payerId,
+          cartId,
+          userId,
+          cartItems,
+          addressInfo,
+          orderStatus,
+          paymentMethord,
+          paymentStatus,
+          totalAmount,
+          orderDate,
+          orderUpdateDate,
+          paymentId,
+          payerId,
         });
-        await newlyCreatedOrder.save()
-        const approvalURL = paymentInfo.links.find(link=> link.rel ==='approval_url').href;
+        await newlyCreatedOrder.save();
+        const approvalURL = paymentInfo.links.find(
+          (link) => link.rel === "approval_url"
+        ).href;
         res.status(201).json({
-            success: true,
-            approvalURL,
-            orderId:newlyCreatedOrder._id
-        })
+          success: true,
+          approvalURL,
+          orderId: newlyCreatedOrder._id,
+        });
       }
     });
   } catch (err) {
@@ -87,29 +89,29 @@ const createOrder = async (req, res) => {
 
 const capturePayment = async (req, res) => {
   try {
-    const {paymentId, payerId, orderId} = req.body
-    let order = await Order.findById(orderId)
-    if(!order){
-        return res.status(404).json({
-            success: false,
-            message: " Order not found"
-        })
+    const { paymentId, payerId, orderId } = req.body;
+    let order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: " Order not found",
+      });
     }
-    order.paymentStatus = 'paid';
-    order.orderStatus ='confirmed';
+    order.paymentStatus = "paid";
+    order.orderStatus = "confirmed";
     order.paymentId = paymentId;
-    order.payerId =payerId;
+    order.payerId = payerId;
 
-    const getCartId = order.cartId
-    await Cart.findByIdAndDelete(getCartId)
+    const getCartId = order.cartId;
+    await Cart.findByIdAndDelete(getCartId);
 
-    await order.save()
+    await order.save();
 
     res.status(200).json({
-        success:true,
-        message:"Order Confirmed",
-        data: order
-    })
+      success: true,
+      message: "Order Confirmed",
+      data: order,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -118,5 +120,58 @@ const capturePayment = async (req, res) => {
     });
   }
 };
+const getAllOrdersbyUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
 
-module.exports = { capturePayment, createOrder };
+    const order = await Order.find({ userId });
+    if (!order.length) {
+      return res.status(404).json({
+        success: false,
+        message: "orders not found",
+      });
+    }
+    res.status(201).json({
+      success: true,
+      message: "Orders Fetched successfuly",
+      data: order,
+    });
+  } catch (err) {
+    console.log("error in getallOrdersbyUserId");
+    res.status(500).json({
+      success: false,
+      message: "Error Occured",
+    });
+  }
+};
+
+const getOrderDetails = async(req, res)=>{
+  try{
+    const {id} = req.params;
+
+  const order = await Order.findById(id)
+  if(!order){
+    return res.status(404).json({
+      success:false,
+      message:'Order not found',
+
+    })
+
+  }
+  res.status(201).json({
+    success:true,
+   // message:'order fetch success',
+    data: order
+  })
+
+  }catch(err){
+    console.log(err)
+    res.status(500).json({
+      success:false,
+      message:'fetch order details Failed'
+    })
+  }
+
+}
+
+module.exports = { capturePayment, createOrder,getOrderDetails,getAllOrdersbyUser };
