@@ -5,20 +5,7 @@ const Product = require("../../models/Products");
 
 const createOrder = async (req, res) => {
   try {
-    const {
-      cartId,
-      userId,
-      cartItems,
-      addressInfo,
-      orderStatus,
-      paymentMethord,
-      paymentStatus,
-      totalAmount,
-      orderDate,
-      orderUpdateDate,
-      paymentId,
-      payerId,
-    } = req.body;
+    const { cartId, userId, cartItems, addressInfo,orderStatus, paymentMethord, paymentStatus, totalAmount, orderDate, orderUpdateDate, paymentId, payerId,} = req.body;
     console.log("cartId", cartId);
     const createPaymentJson = {
       intent: "sale",
@@ -55,19 +42,7 @@ const createOrder = async (req, res) => {
         });
       } else {
         const newlyCreatedOrder = new Order({
-          cartId,
-          userId,
-          cartItems,
-          addressInfo,
-          orderStatus,
-          paymentMethord,
-          paymentStatus,
-          totalAmount,
-          orderDate,
-          orderUpdateDate,
-          paymentId,
-          payerId,
-        });
+        cartId,userId, cartItems,addressInfo, orderStatus,paymentMethord,paymentStatus, totalAmount, orderDate,orderUpdateDate,  paymentId,  payerId,});
         await newlyCreatedOrder.save();
         const approvalURL = paymentInfo.links.find(
           (link) => link.rel === "approval_url"
