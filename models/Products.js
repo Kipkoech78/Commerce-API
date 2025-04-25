@@ -7,7 +7,8 @@ const productShema = new mongoose.Schema({
     brand: String,
     price:Number,
     salePrice: Number,
-    totalStock: Number
+    totalStock: Number,
+    averageReview: Number
 }, {timestamps : true});
 
 module.exports = mongoose.model('Product', productShema)
