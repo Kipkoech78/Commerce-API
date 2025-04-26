@@ -14,7 +14,7 @@ mongoose.connect(mongodbConn)
 
 app.use(
     cors({
-        origin: 'http://localhost:5173',
+        origin: 'https://get78store.onrender.com',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         allowedHeaders: ['Content-Type', 'Authorization','Cache-Control','expires','pragma'],
         credentials: true,
